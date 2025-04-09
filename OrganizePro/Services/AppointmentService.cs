@@ -42,7 +42,7 @@ public class AppointmentService(Context.Context context) : EntityBaseService<App
          })
          .ToListAsync()) 
          .AsEnumerable()
-         .OrderBy(appointment => TimeZoneInfo.ConvertTimeFromUtc(appointment.Start, TimeZoneInfo.Local)) // Perform local sorting
+         .OrderBy(appointment => TimeZoneInfo.ConvertTimeFromUtc(appointment.Start, TimeZoneInfo.Local))
          .ToList();
 
         return appointmentData;
