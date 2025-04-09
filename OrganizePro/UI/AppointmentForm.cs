@@ -118,6 +118,11 @@ public partial class AppointmentForm : Form
     {
         Utilities.CheckForNulls(Inputs, ref IsValid);
 
+        if (!IsValid)
+        {
+            return;
+        }
+
         IsValid =
             await ValidateAppointmentOverlap()
             && ValidateAppointmentTime();
