@@ -26,7 +26,9 @@ public partial class AppointmentForm : Form
             TitleInput,
             TypeInput,
             LocationInput,
-            ContactInput
+            ContactInput,
+            DescriptionInput,
+            UrlInput
         ];
 
         if (_repo.ActiveAppointment is not null)
@@ -60,6 +62,8 @@ public partial class AppointmentForm : Form
             EndInput.Value = Appointment.End;
             LocationInput.Text = Appointment.Location;
             ContactInput.Text = Appointment.Contact;
+            DescriptionInput.Text = Appointment.Description;
+            UrlInput.Text = Appointment.Url;
         }
     }
 
@@ -197,6 +201,8 @@ public partial class AppointmentForm : Form
             Appointment.LastUpdateBy = _repo.LoggedInUser.Username;
             Appointment.User = _repo.LoggedInUser;
             Appointment.Customer = CustomerDropdown.SelectedItem as Customer;
+            Appointment.Description = DescriptionInput.Text;
+            Appointment.Url = UrlInput.Text;
         }
     }
 

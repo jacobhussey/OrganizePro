@@ -29,14 +29,16 @@ public class AppointmentService(Context.Context context) : EntityBaseService<App
          .Select(appointment => new AppointmentTableDto
          {
              Id = appointment.Id,
-             Title = appointment.Title,
-             CustomerName = appointment.Customer.CustomerName,
              Username = appointment.User.Username,
+             CustomerName = appointment.Customer.CustomerName,
+             Title = appointment.Title,
              Type = appointment.Type,
-             Start = appointment.Start,
-             End = appointment.End,
              Location = appointment.Location,
-             Contact = appointment.Contact
+             Contact = appointment.Contact,
+             Description = appointment.Description,
+             URL = appointment.Url,
+             Start = appointment.Start,
+             End = appointment.End
          })
          .ToListAsync()) 
          .AsEnumerable()
@@ -54,12 +56,14 @@ public class AppointmentService(Context.Context context) : EntityBaseService<App
             .Where(a => a.Start.Date == date.Date)
             .Select(a => new AppointmentTableDto
             {
-                Title = a.Title,
-                Type = a.Type,
                 Username = a.User.Username,
                 CustomerName = a.Customer.CustomerName,
+                Title = a.Title,
+                Type = a.Type,
                 Location = a.Location,
                 Contact = a.Contact,
+                Description = a.Description,
+                URL = a.Url,
                 Start = TimeZoneInfo.ConvertTimeFromUtc(a.Start, TimeZoneInfo.Local),
                 End = TimeZoneInfo.ConvertTimeFromUtc(a.End, TimeZoneInfo.Local)
             }).ToList();

@@ -44,6 +44,10 @@
             SelectCustomerLabel = new Label();
             StartInput = new DateTimePicker();
             EndInput = new DateTimePicker();
+            DescriptionInput = new TextBox();
+            UrlInput = new TextBox();
+            DescriptionLabel = new Label();
+            UrlLabel = new Label();
             SuspendLayout();
             // 
             // SaveBtn
@@ -71,7 +75,7 @@
             // EndLabel
             // 
             EndLabel.AutoSize = true;
-            EndLabel.Location = new Point(558, 307);
+            EndLabel.Location = new Point(551, 362);
             EndLabel.Margin = new Padding(4, 0, 4, 0);
             EndLabel.Name = "EndLabel";
             EndLabel.Size = new Size(85, 25);
@@ -81,7 +85,7 @@
             // StartLabel
             // 
             StartLabel.AutoSize = true;
-            StartLabel.Location = new Point(149, 307);
+            StartLabel.Location = new Point(142, 362);
             StartLabel.Margin = new Padding(4, 0, 4, 0);
             StartLabel.Name = "StartLabel";
             StartLabel.Size = new Size(91, 25);
@@ -163,7 +167,7 @@
             // CustomerDropdown
             // 
             CustomerDropdown.FormattingEnabled = true;
-            CustomerDropdown.Location = new Point(441, 392);
+            CustomerDropdown.Location = new Point(521, 448);
             CustomerDropdown.Margin = new Padding(4, 5, 4, 5);
             CustomerDropdown.Name = "CustomerDropdown";
             CustomerDropdown.Size = new Size(171, 33);
@@ -172,7 +176,7 @@
             // SelectCustomerLabel
             // 
             SelectCustomerLabel.AutoSize = true;
-            SelectCustomerLabel.Location = new Point(300, 397);
+            SelectCustomerLabel.Location = new Point(380, 453);
             SelectCustomerLabel.Margin = new Padding(4, 0, 4, 0);
             SelectCustomerLabel.Name = "SelectCustomerLabel";
             SelectCustomerLabel.Size = new Size(140, 25);
@@ -183,7 +187,7 @@
             // 
             StartInput.CustomFormat = "MM/dd/yyyy hh:mm tt";
             StartInput.Format = DateTimePickerFormat.Custom;
-            StartInput.Location = new Point(249, 307);
+            StartInput.Location = new Point(242, 362);
             StartInput.Margin = new Padding(4, 5, 4, 5);
             StartInput.Name = "StartInput";
             StartInput.Size = new Size(284, 31);
@@ -193,17 +197,53 @@
             // 
             EndInput.CustomFormat = "MM/dd/yyyy hh:mm tt";
             EndInput.Format = DateTimePickerFormat.Custom;
-            EndInput.Location = new Point(652, 307);
+            EndInput.Location = new Point(645, 362);
             EndInput.Margin = new Padding(4, 5, 4, 5);
             EndInput.Name = "EndInput";
             EndInput.Size = new Size(284, 31);
             EndInput.TabIndex = 36;
+            // 
+            // DescriptionInput
+            // 
+            DescriptionInput.Location = new Point(280, 295);
+            DescriptionInput.Name = "DescriptionInput";
+            DescriptionInput.Size = new Size(222, 31);
+            DescriptionInput.TabIndex = 37;
+            // 
+            // UrlInput
+            // 
+            UrlInput.Location = new Point(666, 299);
+            UrlInput.Name = "UrlInput";
+            UrlInput.Size = new Size(223, 31);
+            UrlInput.TabIndex = 38;
+            // 
+            // DescriptionLabel
+            // 
+            DescriptionLabel.AutoSize = true;
+            DescriptionLabel.Location = new Point(169, 295);
+            DescriptionLabel.Name = "DescriptionLabel";
+            DescriptionLabel.Size = new Size(102, 25);
+            DescriptionLabel.TabIndex = 39;
+            DescriptionLabel.Text = "Description";
+            // 
+            // UrlLabel
+            // 
+            UrlLabel.AutoSize = true;
+            UrlLabel.Location = new Point(623, 301);
+            UrlLabel.Name = "UrlLabel";
+            UrlLabel.Size = new Size(43, 25);
+            UrlLabel.TabIndex = 40;
+            UrlLabel.Text = "URL";
             // 
             // AppointmentForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1143, 750);
+            Controls.Add(UrlLabel);
+            Controls.Add(DescriptionLabel);
+            Controls.Add(UrlInput);
+            Controls.Add(DescriptionInput);
             Controls.Add(EndInput);
             Controls.Add(StartInput);
             Controls.Add(SelectCustomerLabel);
@@ -246,5 +286,9 @@
         private Label SelectCustomerLabel;
         private DateTimePicker StartInput;
         private DateTimePicker EndInput;
+        private TextBox DescriptionInput;
+        private TextBox UrlInput;
+        private Label DescriptionLabel;
+        private Label UrlLabel;
     }
 }

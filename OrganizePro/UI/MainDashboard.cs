@@ -230,7 +230,7 @@ public partial class MainDashboard : Form
             EnterYearLabel.Visible = true;
             YearInput.Visible = true;
         }
-        else
+        else if (ReportsDropdown.SelectedIndex == 1 || ReportsDropdown.SelectedIndex == 2)
         {
             GenerateReportBtn.Enabled = true;
             YearInput.Text = null;
@@ -308,6 +308,9 @@ public partial class MainDashboard : Form
     private async Task GenerateCustomerAppointmentSummaryReport()
     {
         ReportDgv.DataSource = await _reportService.CreateCustomerSummaryReportDto();
+
+        ReportDgv.Columns["TotalAppointments"].HeaderText = "Total Appointments";
+        ReportDgv.Columns["MostCommonAppointmentType"].HeaderText = "Most Common Type";
     }
 
     private void ExitApplication(object sender, EventArgs e)
