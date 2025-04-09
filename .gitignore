@@ -1,0 +1,50 @@
+# Visual Studio specific files
+.vscode/
+.vs/
+*.user
+*.suo
+
+# Build artifacts
+OrganizePro/bin/
+OrganizePro/obj/
+Debug/
+Release/
+
+# ASP.NET related files (if applicable)
+GeneratedFiles/
+
+# NuGet packages
+*.nupkg
+packages/
+*.snupkg
+
+# Logs
+*.log
+
+# Configuration and runtime files
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Local.json
+*.config
+*.db
+*.sqlite
+
+# Cache and temporary files
+[Tt]emp/
+*.tmp
+*.cache
+
+# IDE and OS files
+Thumbs.db
+desktop.ini
+~$*
+*.swp
+*.bak
+
+# JetBrains Rider specific files
+.idea/
+
+# Node modules (in case of hybrid applications)
+node_modules/
+
+OrganizePro/appsettings.json
