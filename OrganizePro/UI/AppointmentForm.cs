@@ -130,7 +130,7 @@ public partial class AppointmentForm : Form
         var allAppts = await _appointmentService.GetAllAsync();
 
         var existingUserAppts = allAppts
-            .Where(a => a.UserId == _repo.LoggedInUser.Id);
+            .Where(a => a != _repo.ActiveAppointment && a.UserId == _repo.LoggedInUser.Id);
 
         var overlappingAppts = existingUserAppts
             .Where(e => e.Start < apptEnd && e.End > apptStart);
