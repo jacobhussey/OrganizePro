@@ -25,7 +25,7 @@ public class AppointmentService(Context.Context context) : EntityBaseService<App
 
     public async Task<List<AppointmentTableDto>> CreateAppointmentTableDto()
     {
-        var appointmentData = (await _context.Appointments
+        var appointmentData = (await _context.Appointments 
          .Select(appointment => new AppointmentTableDto
          {
              Id = appointment.Id,
@@ -37,12 +37,12 @@ public class AppointmentService(Context.Context context) : EntityBaseService<App
              Contact = appointment.Contact,
              Description = appointment.Description,
              URL = appointment.Url,
-             Start = appointment.Start,
-             End = appointment.End
+             Start = TimeZoneInfo.ConvertTimeFromUtc(appointment.Start, TimeZoneInfo.Local),
+             End = TimeZoneInfo.ConvertTimeFromUtc(appointment.End, TimeZoneInfo.Local)
          })
          .ToListAsync()) 
          .AsEnumerable()
-         .OrderBy(appointment => TimeZoneInfo.ConvertTimeFromUtc(appointment.Start, TimeZoneInfo.Local))
+         .OrderBy(appointment => appointment.Start)
          .ToList();
 
         return appointmentData;

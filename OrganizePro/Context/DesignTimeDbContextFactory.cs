@@ -8,16 +8,13 @@ namespace OrganizePro.Context
     {
         public Context CreateDbContext(string[] args)
         {
-            // Load configuration from appsettings.json
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            // Get the connection string
             var connectionString = configuration.GetConnectionString("MySqlConnection");
 
-            // Create options for DbContext
             var optionsBuilder = new DbContextOptionsBuilder<Context>();
             optionsBuilder.UseMySql(
                 connectionString,

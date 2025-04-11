@@ -1,6 +1,7 @@
 ﻿using OrganizePro.Shared;
 using OrganizePro.Models;
 using OrganizePro.Services;
+using System.Diagnostics;
 
 namespace OrganizePro.UI;
 
@@ -73,10 +74,24 @@ public partial class CustomerForm : Form
 
         if (IsValid)
         {
-            MapCustomerProperties();
-            await _service.CreateEntity(Customer);
-            _repo.ActiveCustomer = null;
-            Close();
+            try
+            {
+                MapCustomerProperties();
+                await _service.CreateEntity(Customer);
+
+                _repo.ActiveCustomer = null;
+
+                Close();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Error in {nameof(AddCustomer)}: {e.Message}");
+
+                Utilities.ShowMessage(
+                    "An error occurred while trying to save the customer. Please try again later.",
+                    "Error"
+                );
+            }
         }
     }
 
@@ -86,10 +101,24 @@ public partial class CustomerForm : Form
 
         if (IsValid)
         {
-            MapCustomerProperties();
-            await _service.UpdateEntity(Customer);
-            _repo.ActiveCustomer = null;
-            Close();
+            try
+            {
+                MapCustomerProperties();
+                await _service.UpdateEntity(Customer);
+
+                _repo.ActiveCustomer = null;
+
+                Close();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Error in {nameof(UpdateCustomer)}: {e.Message}");
+
+                Utilities.ShowMessage(
+                    "An error occurred while trying to save the customer. Please try again later.",
+                    "Error"
+                );
+            }
         }
     }
 

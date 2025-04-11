@@ -1,6 +1,7 @@
 ﻿using OrganizePro.Shared;
 using OrganizePro.Models;
 using OrganizePro.Services;
+using System.Diagnostics;
 
 namespace OrganizePro.UI;
 public partial class AppointmentForm : Form
@@ -90,12 +91,24 @@ public partial class AppointmentForm : Form
 
         if (IsValid)
         {
-            MapAppointmentProperties();
-            await _appointmentService.CreateEntity(Appointment);
+            try
+            {
+                MapAppointmentProperties();
+                await _appointmentService.CreateEntity(Appointment);
 
-            _repo.ActiveAppointment = null;
+                _repo.ActiveAppointment = null;
 
-            Close();
+                Close();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Error in {nameof(AddAppointment)}: {e.Message}");
+
+                Utilities.ShowMessage(
+                    "An error occurred while trying to save the appointment. Please try again later.",
+                    "Error"
+                );
+            }
         }
     }
 
@@ -105,12 +118,24 @@ public partial class AppointmentForm : Form
 
         if (IsValid)
         {
-            MapAppointmentProperties();
-            await _appointmentService.UpdateEntity(Appointment);
+            try
+            {
+                MapAppointmentProperties();
+                await _appointmentService.UpdateEntity(Appointment);
 
-            _repo.ActiveAppointment = null;
+                _repo.ActiveAppointment = null;
 
-            Close();
+                Close();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Error in {nameof(UpdateAppointment)}: {e.Message}");
+
+                Utilities.ShowMessage(
+                    "An error occurred while trying to save the appointment. Please try again later.",
+                    "Error"
+                );
+            }
         }
     }
 
@@ -157,18 +182,23 @@ public partial class AppointmentForm : Form
         var start = StartInput.Value;
         var end = EndInput.Value;
 
-        var nineAM = new DateTime(start.Year, start.Month, start.Day, 9, 0, 0);
-        var fivePM = new DateTime(end.Year, end.Month, end.Day, 17, 0, 0);
+        TimeZoneInfo easternTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+
+        var startInEastern = TimeZoneInfo.ConvertTime(start, TimeZoneInfo.Local, easternTimeZone);
+        var endInEastern = TimeZoneInfo.ConvertTime(end, TimeZoneInfo.Local, easternTimeZone);
+
+        var nineAM = new DateTime(startInEastern.Year, startInEastern.Month, startInEastern.Day, 9, 0, 0, DateTimeKind.Unspecified);
+        var fivePM = new DateTime(endInEastern.Year, endInEastern.Month, endInEastern.Day, 17, 0, 0, DateTimeKind.Unspecified);
 
         bool startIsValid =
-            start >= nineAM &&
-            start <= fivePM &&
-            start.Day == end.Day;
+            startInEastern >= nineAM &&
+            startInEastern <= fivePM &&
+            startInEastern.Day == endInEastern.Day;
 
         bool endIsValid =
-            end >= nineAM &&
-            end <= fivePM &&
-            end.Day == start.Day;
+            endInEastern >= nineAM &&
+            endInEastern <= fivePM &&
+            endInEastern.Day == startInEastern.Day;
 
         if (start < DateTime.Now)
         {
@@ -199,8 +229,8 @@ public partial class AppointmentForm : Form
         {
             Appointment.Title = TitleInput.Text;
             Appointment.Type = TypeInput.Text;
-            Appointment.Start = StartInput.Value;
-            Appointment.End = EndInput.Value;
+            Appointment.Start = DateTime.SpecifyKind(StartInput.Value, DateTimeKind.Local).ToUniversalTime();
+            Appointment.End = DateTime.SpecifyKind(EndInput.Value, DateTimeKind.Local).ToUniversalTime();
             Appointment.Location = LocationInput.Text;
             Appointment.Contact = ContactInput.Text;
             Appointment.LastUpdateBy = _repo.LoggedInUser.Username;

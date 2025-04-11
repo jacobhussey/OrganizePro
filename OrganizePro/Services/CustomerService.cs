@@ -33,6 +33,5 @@ public class CustomerService(Context.Context context) : EntityBaseService<Custom
 
         return customerData;
     }
-
 }
 
