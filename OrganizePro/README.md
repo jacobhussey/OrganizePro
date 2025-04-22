@@ -21,7 +21,7 @@ If Visual Studio is not being used, follow this alternative approach:
 1. Open a CLI and navigate to the project directory
 1. Run `dotnet ef database update`
 
-After following the steps above, the application will be properly configured for use. 
+After completing the steps above, the application will be properly configured for use. 
 
 ## Entity Relationships
 The entity relationships are as follows:
