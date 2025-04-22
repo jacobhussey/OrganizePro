@@ -17,7 +17,7 @@ A database connection is needed to save and fetch data. The following steps expl
 3. In Visual Studio, open the **Nuget Package Manager Console**  
 (Tools > Nuget Package Manager > Packet Manager Console) and run `update-database` 
 
-If Visual Studio is not being used, follow this alternative approach:
+For an alternative approach to Step 3, do this:
 1. Open a CLI and navigate to the project directory
 1. Run `dotnet ef database update`
 
