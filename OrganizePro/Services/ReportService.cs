@@ -54,8 +54,8 @@ public class ReportService
                 AppointmentTitle = appointment.Title,
                 CustomerName = appointment.Customer.CustomerName,
                 AppointmentType = appointment.Type,
-                StartTime = TimeZoneInfo.ConvertTimeFromUtc(appointment.Start, TimeZoneInfo.Local),
-                EndTime = TimeZoneInfo.ConvertTimeToUtc(appointment.End, TimeZoneInfo.Local),
+                StartTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.SpecifyKind(appointment.Start, DateTimeKind.Utc), TimeZoneInfo.Local),
+                EndTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.SpecifyKind(appointment.End, DateTimeKind.Utc), TimeZoneInfo.Local),
                 Location = appointment.Location,
                 Contact = appointment.Contact
             })

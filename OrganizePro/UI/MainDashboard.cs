@@ -10,21 +10,21 @@ public partial class MainDashboard : Form
     private readonly CustomerService _customerService;
     private readonly AppointmentService _appointmentService;
     private readonly ReportService _reportService;
-    private readonly Repository _repo;
+    private readonly Store _store;
     private readonly IServiceProvider _serviceProvider;
 
     public MainDashboard(
         CustomerService customerService,
         AppointmentService appointmentService,
         ReportService reportService,
-        Repository repo,
+        Store store,
         IServiceProvider serviceProvider
     )
     {
         _customerService = customerService;
         _appointmentService = appointmentService;
         _reportService = reportService;
-        _repo = repo;
+        _store = store;
         _serviceProvider = serviceProvider;
 
         InitializeComponent();
@@ -90,7 +90,7 @@ public partial class MainDashboard : Form
         var allAppointments = await _appointmentService.GetAllAsync();
 
         var upcomingUserAppts = allAppointments
-            .Where(a => a.UserId == _repo.LoggedInUser.Id &&
+            .Where(a => a.UserId == _store.LoggedInUser.Id &&
                         a.Start >= DateTime.Now &&
                         a.Start <= DateTime.Now.AddMinutes(15))
             .Select(appt => $"{appt.Type} with {appt.Customer.CustomerName} at {appt.Start}")
@@ -110,19 +110,19 @@ public partial class MainDashboard : Form
     {
         int id = CustomerDgv.GetSelectedId(e, "Id");
 
-        _repo.ActiveCustomer = await _customerService.GetEntityByIdAsync(id);
+        _store.ActiveCustomer = await _customerService.GetEntityByIdAsync(id);
     }
 
     private async void SetActiveAppointment(object sender, DataGridViewCellEventArgs e)
     {
         int id = AppointmentDgv.GetSelectedId(e, "Id");
 
-        _repo.ActiveAppointment = await _appointmentService.GetEntityByIdAsync(id);
+        _store.ActiveAppointment = await _appointmentService.GetEntityByIdAsync(id);
     }
 
     private async void ShowCustomerForm(object sender, EventArgs e)
     {
-        if (sender is Button clickedButton && clickedButton == UpdateCustomerBtn && _repo.ActiveCustomer is null)
+        if (sender is Button clickedButton && clickedButton == UpdateCustomerBtn && _store.ActiveCustomer is null)
         {
             Utilities.ShowMessage("Please select a customer to update.", "No Selection");
             return;
@@ -139,7 +139,7 @@ public partial class MainDashboard : Form
 
     private async void ShowAppointmentForm(object sender, EventArgs e)
     {
-        if (sender is Button clickedButton && clickedButton == UpdateAppointmentBtn && _repo.ActiveAppointment is null)
+        if (sender is Button clickedButton && clickedButton == UpdateAppointmentBtn && _store.ActiveAppointment is null)
         {
             Utilities.ShowMessage("Please select an appointment to update.", "No Selection");
             return;
@@ -156,7 +156,7 @@ public partial class MainDashboard : Form
 
     private async void DeleteCustomer(object sender, EventArgs e)
     {
-        if (_repo.ActiveCustomer is null)
+        if (_store.ActiveCustomer is null)
         {
             Utilities.ShowMessage(
                 "Please select a Customer to delete.",
@@ -167,7 +167,7 @@ public partial class MainDashboard : Form
         }
 
         DialogResult result = Utilities.ConfirmAction(
-            $"Are you sure you want to delete {_repo.ActiveCustomer.CustomerName}?",
+            $"Are you sure you want to delete {_store.ActiveCustomer.CustomerName}?",
             "Confirm Deletion"
         );
 
@@ -175,7 +175,7 @@ public partial class MainDashboard : Form
         {
             try
             {
-                await _customerService.DeleteEntity(_repo.ActiveCustomer);
+                await _customerService.DeleteEntity(_store.ActiveCustomer);
                 await PopulateCustomerTable();
                 await PopulateAppointmentTable();
             }
@@ -192,7 +192,7 @@ public partial class MainDashboard : Form
 
     private async void DeleteAppointment(object sender, EventArgs e)
     {
-        if (_repo.ActiveAppointment is null)
+        if (_store.ActiveAppointment is null)
         {
             Utilities.ShowMessage(
                 "Please select an appointment to delete.",
@@ -203,7 +203,7 @@ public partial class MainDashboard : Form
         }
 
         DialogResult result = Utilities.ConfirmAction(
-            $"Are you sure you want to delete {_repo.ActiveAppointment.Title}?",
+            $"Are you sure you want to delete {_store.ActiveAppointment.Title}?",
             "Confirm Deletion"
         );
 
@@ -211,7 +211,7 @@ public partial class MainDashboard : Form
         {
             try
             {
-                await _appointmentService.DeleteEntity(_repo.ActiveAppointment);
+                await _appointmentService.DeleteEntity(_store.ActiveAppointment);
                 await PopulateAppointmentTable(); 
             }
             catch (Exception ex)

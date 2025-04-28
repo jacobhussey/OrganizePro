@@ -8,16 +8,16 @@ public partial class LoginForm : Form
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly UserService _userService;
-    private readonly Repository _repo;
+    private readonly Store _store;
     public LoginForm(
         IServiceProvider serviceProvider,
         UserService userService,
-        Repository repo
+        Store store
     )
     {
         _serviceProvider = serviceProvider;
         _userService = userService;
-        _repo = repo;
+        _store = store;
 
         InitializeComponent();
     }
@@ -137,7 +137,7 @@ public partial class LoginForm : Form
             .Where(u => u.Username == user.Username && u.Password == user.Password)
             .FirstOrDefault();
 
-        _repo.LoggedInUser = user;
+        _store.LoggedInUser = user;
     }
 
     private static void WriteUserLog(User user)

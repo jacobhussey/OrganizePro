@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using OrganizePro.UI;
 using OrganizePro.Services;
+using OrganizePro.Shared;
 
 namespace OrganizePro;
 
@@ -41,7 +42,7 @@ internal static class Program
         services.AddTransient<ReportService>();
         services.AddTransient<UserService>();
 
-        services.AddSingleton<Repository>();
+        services.AddSingleton<Store>();
 
         services.AddTransient<LoginForm>();
         services.AddTransient<MainDashboard>();

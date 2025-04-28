@@ -12,13 +12,13 @@ public partial class AppointmentForm : Form
     private bool IsValid = false;
     private readonly AppointmentService _appointmentService;
     private readonly CustomerService _customerService;
-    private readonly Repository _repo;
+    private readonly Store _store;
 
-    public AppointmentForm(AppointmentService apptService, CustomerService custService, Repository repo)
+    public AppointmentForm(AppointmentService apptService, CustomerService custService, Store store)
     {
         _appointmentService = apptService;
         _customerService = custService;
-        _repo = repo;
+        _store = store;
 
         InitializeComponent();
 
@@ -32,9 +32,9 @@ public partial class AppointmentForm : Form
             UrlInput
         ];
 
-        if (_repo.ActiveAppointment is not null)
+        if (_store.ActiveAppointment is not null)
         {
-            Appointment = _repo.ActiveAppointment;
+            Appointment = _store.ActiveAppointment;
             PopulateFields();
         }
     }
@@ -70,11 +70,11 @@ public partial class AppointmentForm : Form
 
     private async void SaveClick(object sender, EventArgs e)
     {
-        if (_repo.ActiveAppointment is null)
+        if (_store.ActiveAppointment is null)
         {
             await AddAppointment();
         }
-        else if (_repo.ActiveAppointment is not null)
+        else if (_store.ActiveAppointment is not null)
         {
             await UpdateAppointment();
         }
@@ -84,7 +84,7 @@ public partial class AppointmentForm : Form
     {
         Appointment = new()
         {
-            CreatedBy = _repo.LoggedInUser.Username
+            CreatedBy = _store.LoggedInUser.Username
         };
 
         await ValidateAppointment();
@@ -96,7 +96,7 @@ public partial class AppointmentForm : Form
                 MapAppointmentProperties();
                 await _appointmentService.CreateEntity(Appointment);
 
-                _repo.ActiveAppointment = null;
+                _store.ActiveAppointment = null;
 
                 Close();
             }
@@ -123,7 +123,7 @@ public partial class AppointmentForm : Form
                 MapAppointmentProperties();
                 await _appointmentService.UpdateEntity(Appointment);
 
-                _repo.ActiveAppointment = null;
+                _store.ActiveAppointment = null;
 
                 Close();
             }
@@ -160,7 +160,7 @@ public partial class AppointmentForm : Form
         var allAppts = await _appointmentService.GetAllAsync();
 
         var existingUserAppts = allAppts
-            .Where(a => a != _repo.ActiveAppointment && a.UserId == _repo.LoggedInUser.Id);
+            .Where(a => a != _store.ActiveAppointment && a.UserId == _store.LoggedInUser.Id);
 
         var overlappingAppts = existingUserAppts
             .Where(e => e.Start < apptEnd && e.End > apptStart);
@@ -168,7 +168,7 @@ public partial class AppointmentForm : Form
         if (overlappingAppts.Any())
         {
             Utilities.ShowMessage(
-                $"User '{_repo.LoggedInUser.Username}' already has an appointment scheduled during the selected time.", 
+                $"User '{_store.LoggedInUser.Username}' already has an appointment scheduled during the selected time.", 
                 "Invalid Input"
             );
             return false;
@@ -233,8 +233,8 @@ public partial class AppointmentForm : Form
             Appointment.End = DateTime.SpecifyKind(EndInput.Value, DateTimeKind.Local).ToUniversalTime();
             Appointment.Location = LocationInput.Text;
             Appointment.Contact = ContactInput.Text;
-            Appointment.LastUpdateBy = _repo.LoggedInUser.Username;
-            Appointment.User = _repo.LoggedInUser;
+            Appointment.LastUpdateBy = _store.LoggedInUser.Username;
+            Appointment.User = _store.LoggedInUser;
             Appointment.Customer = CustomerDropdown.SelectedItem as Customer;
             Appointment.Description = DescriptionInput.Text;
             Appointment.Url = UrlInput.Text;
@@ -248,7 +248,7 @@ public partial class AppointmentForm : Form
 
     private void Cancel(object sender, EventArgs e)
     {
-        _repo.ActiveAppointment = null;
+        _store.ActiveAppointment = null;
 
         Close();
     }

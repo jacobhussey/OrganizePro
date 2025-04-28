@@ -1,8 +1,8 @@
 ﻿using OrganizePro.Models;
 
-namespace OrganizePro.Services;
+namespace OrganizePro.Shared;
 
-public class Repository
+public class Store
 {
     public Customer? ActiveCustomer { get; set; }
     public Appointment? ActiveAppointment { get; set; }

@@ -8,15 +8,15 @@ namespace OrganizePro.UI;
 public partial class CustomerForm : Form
 {
     private readonly CustomerService _service;
-    private readonly Repository _repo;
+    private readonly Store _store;
     private Customer Customer { get; set; }
     private List<TextBox> Inputs { get; set; }
     private bool IsValid = false;
 
-    public CustomerForm(CustomerService service, Repository repo)
+    public CustomerForm(CustomerService service, Store store)
     {
         _service = service;
-        _repo = repo;
+        _store = store;
 
         InitializeComponent();
 
@@ -30,9 +30,9 @@ public partial class CustomerForm : Form
             CountryInput
         ];
 
-        if (_repo.ActiveCustomer is not null)
+        if (_store.ActiveCustomer is not null)
         {
-            Customer = _repo.ActiveCustomer;
+            Customer = _store.ActiveCustomer;
             PopulateFields();
         }
     }
@@ -53,11 +53,11 @@ public partial class CustomerForm : Form
 
     private async void SaveClick(object sender, EventArgs e)
     {
-        if (_repo.ActiveCustomer is null)
+        if (_store.ActiveCustomer is null)
         {
             await AddCustomer();
         }
-        else if (_repo.ActiveCustomer is not null)
+        else if (_store.ActiveCustomer is not null)
         {
             await UpdateCustomer();
         }
@@ -67,7 +67,7 @@ public partial class CustomerForm : Form
     {
         Customer = new()
         {
-            CreatedBy = _repo.LoggedInUser.Username
+            CreatedBy = _store.LoggedInUser.Username
         };
 
         ValidateCustomer();
@@ -79,7 +79,7 @@ public partial class CustomerForm : Form
                 MapCustomerProperties();
                 await _service.CreateEntity(Customer);
 
-                _repo.ActiveCustomer = null;
+                _store.ActiveCustomer = null;
 
                 Close();
             }
@@ -106,7 +106,7 @@ public partial class CustomerForm : Form
                 MapCustomerProperties();
                 await _service.UpdateEntity(Customer);
 
-                _repo.ActiveCustomer = null;
+                _store.ActiveCustomer = null;
 
                 Close();
             }
@@ -141,7 +141,7 @@ public partial class CustomerForm : Form
             Customer.Address.City.CityName = CityInput.Text;
             Customer.Address.City.Country.CountryName = CountryInput.Text;
             Customer.IsActive = true;
-            Customer.LastUpdateBy = _repo.LoggedInUser.Username;
+            Customer.LastUpdateBy = _store.LoggedInUser.Username;
         }
     }
 
@@ -157,7 +157,7 @@ public partial class CustomerForm : Form
 
     private void CancelClick(object sender, EventArgs e)
     {
-        _repo.ActiveCustomer = null;
+        _store.ActiveCustomer = null;
 
         Close();
     }
