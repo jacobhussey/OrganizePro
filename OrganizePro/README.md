@@ -1,5 +1,5 @@
 # Overview
-This is a Windows Forms application with a target framework of .NET 8.
+This is a Windows Forms application with a target framework of .NET 8.  
 The application reads and writes to a MySQL database using Entity Framework Core (EF Core).
 
 ## Setting Up
@@ -17,7 +17,7 @@ A database connection is needed to save and fetch data. The following steps expl
 3. In Visual Studio, open the **Nuget Package Manager Console**  
 (Tools > Nuget Package Manager > Packet Manager Console) and run `update-database` 
 
-If Visual Studio is not being used, follow this alternative approach:
+For an alternative approach to Step 3, do this:
 1. Open a CLI and navigate to the project directory
 1. Run `dotnet ef database update`
 
@@ -43,7 +43,8 @@ to be resolved when needed.
 - Scope:
 	- `AddTransient<>` creates a new instance each time it's requested (e.g., `CustomerService`,  
 	`LoginForm`)
-	- `AddSingleton<>` Maintains a single instance throughout the application's lifetime (e.g., `Repository`)
+	- `AddSingleton<>` Maintains a single instance throughout the application's lifetime  
+   (e.g., `Repository`)
 - Uses `AddDbContext<>` to configure data base connectivity, binding `Context.Context` to  
 MySQL
 
@@ -52,11 +53,11 @@ and promoting maintainability. This ensures clean separation between UI, service
 
 ## Service Architecture 
 The generic base service, `EntityBaseService`, provides a reusable and scalable foundation for  
-handling database operations across different entity types. By using generics (`TEntity` and `TContext`),  
-it abstracts common CRUD operations, allowing multiple entities to share the same logic without  
-duplicating code.
+handling database operations across different entity types. By using generics  
+(`TEntity` and `TContext`), it abstracts common CRUD operations, allowing multiple entities  
+to share the same logic without duplicating code.
 - `TEntity` ensures the service can operate on various entity types derived from `EntityBase`
-- `TContext` allows integration with different database contexts, making it adaptable across
+- `TContext` allows integration with different database contexts, making it adaptable across  
 applications using `DbContext`  
 
 This approach was implemented to reduce redundancy and maintain efficiency.
