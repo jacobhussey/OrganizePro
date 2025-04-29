@@ -4,14 +4,9 @@ using System.Globalization;
 
 namespace OrganizePro.Services;
 
-public class ReportService
+public class ReportService(Context.Context context)
 {
-    private readonly Context.Context _context;
-
-    public ReportService(Context.Context context)
-    {
-        _context = context;
-    }
+    private readonly Context.Context _context = context;
 
     public async Task<List<AppointmentTypeReportDto>> CreateAppointmentTypeReportDto(int year)
     {
