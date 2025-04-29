@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using OrganizePro.Context;
 using OrganizePro.Models;
 using OrganizePro.Services;
@@ -19,7 +20,8 @@ public class AppointmentServiceTests
             .Options;
 
         _dbContext = new TestDbContext(options);
-        _service = new AppointmentService(_dbContext);
+        var logger = NullLogger<AppointmentService>.Instance;
+        _service = new AppointmentService(_dbContext, logger);
 
         _dbContext.Database.EnsureDeleted(); 
         _dbContext.Database.EnsureCreated();

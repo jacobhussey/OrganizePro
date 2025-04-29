@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using OrganizePro.Context;
 using OrganizePro.Models;
 using OrganizePro.Services;
@@ -19,7 +20,8 @@ public class CustomerServiceTests
             .Options;
 
         _dbContext = new TestDbContext(options);
-        _service = new CustomerService(_dbContext);
+        var logger = NullLogger<CustomerService>.Instance;
+        _service = new CustomerService(_dbContext, logger);
 
         _dbContext.Database.EnsureDeleted();
         _dbContext.Database.EnsureCreated();

@@ -2,6 +2,7 @@
 using OrganizePro.Models;
 using OrganizePro.Services;
 using OrganizePro.Context;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Tests.Services;
 
@@ -19,7 +20,8 @@ public class UserServiceTests
             .Options;
 
         _dbContext = new TestDbContext(options);
-        _service = new UserService(_dbContext);
+        var logger = NullLogger<UserService>.Instance;
+        _service = new UserService(_dbContext, logger);
 
         _dbContext.Database.EnsureDeleted();
         _dbContext.Database.EnsureCreated();

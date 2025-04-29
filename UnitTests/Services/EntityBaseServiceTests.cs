@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using OrganizePro.Context;
 using Tests.Models;
 
@@ -18,7 +19,8 @@ public class EntityBaseServiceTests
             .Options;
 
         _dbContext = new TestDbContext(options);
-        _service = new TestEntityService(_dbContext);
+        var logger = NullLogger<TestEntityService>.Instance;
+        _service = new TestEntityService(_dbContext, logger);
 
         _dbContext.Database.EnsureDeleted(); 
         _dbContext.Database.EnsureCreated(); 
@@ -43,7 +45,7 @@ public class EntityBaseServiceTests
         var entity = new TestEntity { Name = "Test" };
 
         // Act
-        await _service.CreateEntity(entity);
+        await _service.CreateEntityAsync(entity);
         var result = await _service.GetEntityByIdAsync(entity.Id);
 
         // Assert
@@ -56,7 +58,7 @@ public class EntityBaseServiceTests
     {
         // Arrange
         var entity = new TestEntity { Name = "Test" };
-        await _service.CreateEntity(entity);
+        await _service.CreateEntityAsync(entity);
 
         // Act
         var result = await _service.GetEntityByIdAsync(entity.Id);
@@ -71,11 +73,11 @@ public class EntityBaseServiceTests
     {
         // Arrange
         var entity = new TestEntity { Name = "Old Name" };
-        await _service.CreateEntity(entity);
+        await _service.CreateEntityAsync(entity);
 
         // Act
         entity.Name = "New Name";
-        await _service.UpdateEntity(entity);
+        await _service.UpdateEntityAsync(entity);
         var result = await _service.GetEntityByIdAsync(entity.Id);
 
         // Assert
@@ -87,10 +89,10 @@ public class EntityBaseServiceTests
     {
         // Arrange
         var entity = new TestEntity { Name = "Test" };
-        await _service.CreateEntity(entity);
+        await _service.CreateEntityAsync(entity);
 
         // Act
-        await _service.DeleteEntity(entity);
+        await _service.DeleteEntityAsync(entity);
         var result = await _service.GetEntityByIdAsync(entity.Id);
 
         // Assert
