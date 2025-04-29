@@ -48,3 +48,5 @@ desktop.ini
 node_modules/
 
 OrganizePro/appsettings.json
+Tests/obj
+Tests/bin
