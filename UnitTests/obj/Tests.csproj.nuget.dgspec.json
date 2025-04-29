@@ -61,6 +61,14 @@
               "target": "Package",
               "version": "[9.0.3, )"
             },
+            "Microsoft.Extensions.Logging.Console": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.Extensions.Logging.Debug": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
             "MySql.Data": {
               "target": "Package",
               "version": "[9.2.0, )"

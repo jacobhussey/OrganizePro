@@ -77,16 +77,14 @@ public partial class CustomerForm : Form
             try
             {
                 MapCustomerProperties();
-                await _service.CreateEntity(Customer);
+                await _service.CreateEntityAsync(Customer);
 
                 _store.ActiveCustomer = null;
 
                 Close();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.WriteLine($"Error in {nameof(AddCustomer)}: {e.Message}");
-
                 Utilities.ShowMessage(
                     "An error occurred while trying to save the customer. Please try again later.",
                     "Error"
@@ -104,16 +102,14 @@ public partial class CustomerForm : Form
             try
             {
                 MapCustomerProperties();
-                await _service.UpdateEntity(Customer);
+                await _service.UpdateEntityAsync(Customer);
 
                 _store.ActiveCustomer = null;
 
                 Close();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.WriteLine($"Error in {nameof(UpdateCustomer)}: {e.Message}");
-
                 Utilities.ShowMessage(
                     "An error occurred while trying to save the customer. Please try again later.",
                     "Error"
@@ -124,7 +120,7 @@ public partial class CustomerForm : Form
 
     private void ValidateCustomer()
     {
-        Utilities.CheckForNulls(Inputs, ref IsValid);
+        IsValid = Utilities.CheckForNulls(Inputs);
     }
 
     private void MapCustomerProperties()

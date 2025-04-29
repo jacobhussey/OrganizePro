@@ -94,16 +94,14 @@ public partial class AppointmentForm : Form
             try
             {
                 MapAppointmentProperties();
-                await _appointmentService.CreateEntity(Appointment);
+                await _appointmentService.CreateEntityAsync(Appointment);
 
                 _store.ActiveAppointment = null;
 
                 Close();
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                Debug.WriteLine($"Error in {nameof(AddAppointment)}: {e.Message}");
-
                 Utilities.ShowMessage(
                     "An error occurred while trying to save the appointment. Please try again later.",
                     "Error"
@@ -121,16 +119,14 @@ public partial class AppointmentForm : Form
             try
             {
                 MapAppointmentProperties();
-                await _appointmentService.UpdateEntity(Appointment);
+                await _appointmentService.UpdateEntityAsync(Appointment);
 
                 _store.ActiveAppointment = null;
 
                 Close();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.WriteLine($"Error in {nameof(UpdateAppointment)}: {e.Message}");
-
                 Utilities.ShowMessage(
                     "An error occurred while trying to save the appointment. Please try again later.",
                     "Error"
@@ -141,15 +137,9 @@ public partial class AppointmentForm : Form
 
     private async Task ValidateAppointment()
     {
-        Utilities.CheckForNulls(Inputs, ref IsValid);
-
-        if (!IsValid)
-        {
-            return;
-        }
-
         IsValid =
-            await ValidateAppointmentOverlap()
+            Utilities.CheckForNulls(Inputs)
+            && await ValidateAppointmentOverlap()
             && ValidateAppointmentTime();
     }
 

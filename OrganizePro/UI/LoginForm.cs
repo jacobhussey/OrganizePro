@@ -113,7 +113,7 @@ public partial class LoginForm : Form
             return;
         }
 
-        await _userService.CreateEntity(user);
+        await _userService.CreateEntityAsync(user);
         await ShowMainDashboard(user);
     }
 

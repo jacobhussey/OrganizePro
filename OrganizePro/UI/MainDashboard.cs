@@ -2,7 +2,6 @@
 using OrganizePro.Services;
 using OrganizePro.UI;
 using Microsoft.Extensions.DependencyInjection;
-using System.Diagnostics;
 
 namespace OrganizePro;
 public partial class MainDashboard : Form
@@ -175,13 +174,12 @@ public partial class MainDashboard : Form
         {
             try
             {
-                await _customerService.DeleteEntity(_store.ActiveCustomer);
+                await _customerService.DeleteEntityAsync(_store.ActiveCustomer);
                 await PopulateCustomerTable();
                 await PopulateAppointmentTable();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine($"Error in {nameof(DeleteCustomer)}: {ex.Message}");
                 Utilities.ShowMessage(
                     "An error occurred while trying to delete the customer. Please try again later.",
                     "Error"
@@ -211,13 +209,11 @@ public partial class MainDashboard : Form
         {
             try
             {
-                await _appointmentService.DeleteEntity(_store.ActiveAppointment);
+                await _appointmentService.DeleteEntityAsync(_store.ActiveAppointment);
                 await PopulateAppointmentTable(); 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine($"Error in {nameof(DeleteAppointment)}: {ex.Message}");
-
                 Utilities.ShowMessage(
                     "An error occurred while trying to delete the appointment. Please try again later.",
                     "Error"

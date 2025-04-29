@@ -63,7 +63,7 @@ public static class Utilities
         }
     }
 
-    public static void CheckForNulls(List<TextBox> inputs, ref bool isValid)
+    public static bool CheckForNulls(List<TextBox> inputs)
     {
         if (inputs.Any(input => string.IsNullOrWhiteSpace(input.Text)))
         {
@@ -72,11 +72,10 @@ public static class Utilities
                 "Invalid Input"
             );
 
-            isValid = false;
-            return;
+            return false;
         }
 
-        isValid = true;
+        return true;
     }
 
     public static List<TextBox> TrimFields(List<TextBox> inputs)

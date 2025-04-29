@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OrganizePro.Models;
 
 namespace OrganizePro.Services;
 
-public class UserService(Context.Context context) : EntityBaseService<User, Context.Context>(context)
+public class UserService(Context.Context context, ILogger<UserService> logger) : 
+    EntityBaseService<User, Context.Context>(context, logger)
 {
     public async Task<bool> ValidateLogin(User user)
     {

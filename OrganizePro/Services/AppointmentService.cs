@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OrganizePro.DTOs;
 using OrganizePro.Models;
 
 namespace OrganizePro.Services;
 
-public class AppointmentService(Context.Context context) : EntityBaseService<Appointment, Context.Context>(context)
+public class AppointmentService(Context.Context context, ILogger<AppointmentService> logger) :
+    EntityBaseService<Appointment, Context.Context>(context, logger)
 {
     public override async Task<Appointment> GetEntityByIdAsync(int id)
     {

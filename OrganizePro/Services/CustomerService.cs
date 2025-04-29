@@ -1,10 +1,12 @@
 ﻿using OrganizePro.Models;
 using Microsoft.EntityFrameworkCore;
 using OrganizePro.DTOs;
+using Microsoft.Extensions.Logging;
 
 namespace OrganizePro.Services;
 
-public class CustomerService(Context.Context context) : EntityBaseService<Customer, Context.Context>(context)
+public class CustomerService(Context.Context context, ILogger<CustomerService> logger) : 
+    EntityBaseService<Customer, Context.Context>(context, logger)
 {
     public override async Task<Customer> GetEntityByIdAsync(int id)
     {

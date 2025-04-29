@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using OrganizePro.UI;
 using OrganizePro.Services;
 using OrganizePro.Shared;
+using Microsoft.Extensions.Logging;
 
 namespace OrganizePro;
 
@@ -26,6 +27,12 @@ internal static class Program
 
     private static void ConfigureServices(IServiceCollection services)
     {
+        services.AddLogging(config =>
+        {
+            config.AddConsole();
+            config.AddDebug();
+        });
+
         var configuration = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
