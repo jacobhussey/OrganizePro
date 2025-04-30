@@ -26,7 +26,7 @@ After completing the steps above, the application will be properly configured fo
 ## Entity Relationships
 The entity relationships are as follows:
 
-- ONE `User` has ONE or MANY `Appointments`  
+- ONE `Appointment` has ONE `User`
 - ONE `Appointment` has ONE `Customer` 
 - ONE `Customer` has ONE `Address`  
 - ONE `Address` has ONE `City`  
